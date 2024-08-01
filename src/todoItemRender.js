@@ -47,8 +47,7 @@ function todoItemRender(item) {
   removeButton.classList.add('todo__remove');
   removeButton.textContent = 'x';
   removeButton.addEventListener('click', () => {
-    // TODO: Maybe project render can handle the removal, not sure.
-    element.remove();
+    element.parentElement.remove();
     const index = item.project.items.indexOf(item);
     if (index !== -1) {
       item.project.items.splice(index, 1);
