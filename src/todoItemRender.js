@@ -3,12 +3,15 @@ import Priority from './priority';
 
 function todoItemRender(item) {
   const element = document.createElement('div');
-  const todoDiv = document.createElement('div');
-  todoDiv.classList.add('todo');
+  element.classList.add('todo');
 
-  const checkboxButton = document.createElement('button');
+  const checkboxButton = document.createElement('input');
+  checkboxButton.type = 'checkbox';
+  checkboxButton.checked = item.done;
   checkboxButton.classList.add('todo__checkbox');
-  checkboxButton.textContent = '✅';
+  checkboxButton.addEventListener('click', () => {
+    item.done = checkboxButton.checked;
+  });
 
   const contentDiv = document.createElement('div');
   contentDiv.classList.add('todo__content');
@@ -32,6 +35,9 @@ function todoItemRender(item) {
       prioritySelect.appendChild(priorityOption);
     }
   }
+  prioritySelect.addEventListener('change', (e) =>{
+    item.priority = e.target.value;
+  });
 
   const dateDiv = document.createElement('div');
   dateDiv.classList.add('todo__date');
@@ -40,6 +46,14 @@ function todoItemRender(item) {
   const removeButton = document.createElement('button');
   removeButton.classList.add('todo__remove');
   removeButton.textContent = 'x';
+  removeButton.addEventListener('click', () => {
+    // TODO: Maybe project render can handle the removal, not sure.
+    element.remove();
+    const index = item.project.items.indexOf(item);
+    if (index !== -1) {
+      item.project.items.splice(index, 1);
+    }
+  });
 
   const descriptionP = document.createElement('p');
   descriptionP.classList.add('todo__description');
@@ -53,10 +67,8 @@ function todoItemRender(item) {
   contentDiv.appendChild(headerDiv);
   contentDiv.appendChild(descriptionP);
 
-  todoDiv.appendChild(checkboxButton);
-  todoDiv.appendChild(contentDiv);
-
-  element.appendChild(todoDiv);
+  element.appendChild(checkboxButton);
+  element.appendChild(contentDiv);
 
   return element;
 }

@@ -9,7 +9,8 @@ const body = document.querySelector('body');
 
 const project = new Project();
 
-project.addTodoItem(new TodoItem('First Todo', 'Heyo', addDays(new Date(), 3), Priority.LOW));
+project.addTodoItem(new TodoItem(project, 'First Todo', 'Heyo', addDays(new Date(), 3), Priority.LOW));
+project.addTodoItem(new TodoItem(project, 'First Todo', 'Heyo', addDays(new Date(), 3), Priority.LOW));
 project.items.forEach((item) => {
   body.appendChild(todoItemRender(item));
 });
