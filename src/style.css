@@ -8,6 +8,29 @@ html {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+.app {
+  display: flex;
+
+  ul {
+    list-style-type: none;
+  }
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.sidebar__sections {
+  display: flex;
+  flex-direction: column;
+}
+
+.content {
+  flex: 5;
+}
+
 .todo {
   display: flex;
 }
