@@ -6,6 +6,7 @@ class Project {
 
   addTodoItem(item) {
     this.items.push(item);
+    item.project = this;
   };
 }
 

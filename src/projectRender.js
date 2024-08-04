@@ -1,7 +1,6 @@
-import Priority from './priority';
 import todoItemRender from './todoItemRender';
 
-function projectRender(project) {
+function projectRender(project, targetElement = null) {
   const element = document.createElement('div');
   element.classList.add('project');
 
@@ -14,6 +13,12 @@ function projectRender(project) {
   });
 
   element.appendChild(projectList);
+
+  if (targetElement) {
+    targetElement.innerHTML = '';
+    targetElement.appendChild(element);
+    return;
+  }
 
   return element;
 }
