@@ -8,7 +8,7 @@ function projectRender(project, targetElement = null) {
 
   project.items.forEach(item => {
     const li = document.createElement('li');
-    li.appendChild(todoItemRender(item));
+    li.appendChild(todoItemRender(item, project));
     projectList.appendChild(li);
   });
 

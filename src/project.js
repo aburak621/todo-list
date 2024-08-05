@@ -1,3 +1,5 @@
+import TodoItem from './todoItem';
+
 class Project {
   constructor(name) {
     this.name = name;
@@ -6,8 +8,15 @@ class Project {
 
   addTodoItem(item) {
     this.items.push(item);
-    item.project = this;
   };
+
+  fromParsedJSON(jsonProject) {
+    this.name = jsonProject.name;
+    this.items = [];
+    jsonProject.items.forEach(item => {
+      this.items.push(new TodoItem(item.title, item.description, new Date(item.dueDate), item.priority, item.done, item.notes));
+    });
+  }
 }
 
 export default Project;

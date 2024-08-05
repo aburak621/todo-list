@@ -8,7 +8,6 @@ class TodoItem {
     this.priority = priority;
     this.done = done;
     this.notes = notes;
-    this.project = null;
   }
 }
 

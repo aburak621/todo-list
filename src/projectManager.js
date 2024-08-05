@@ -1,3 +1,5 @@
+import Project from './project';
+
 class ProjectManager {
   constructor() {
     this.projects = [];
@@ -22,6 +24,20 @@ class ProjectManager {
 
   changeActiveProject(project) {
     this.activeProject = project;
+  }
+
+  fromParsedJSON(jsonManager) {
+    this.activeProject = null;
+    this.projects = [];
+    jsonManager.projects.forEach(project => {
+      const newProject = new Project(project.name);
+      newProject.fromParsedJSON(project);
+      this.projects.push(newProject);
+
+      if (jsonManager.activeProject.name == newProject.name) {
+        this.activeProject = newProject;
+      }
+    });
   }
 }
 

@@ -1,7 +1,7 @@
 import { formatRelative } from 'date-fns';
 import Priority from './priority';
 
-function todoItemRender(item) {
+function todoItemRender(item, project) {
   const element = document.createElement('div');
   element.classList.add('todo');
 
@@ -11,6 +11,7 @@ function todoItemRender(item) {
   checkboxButton.classList.add('todo__checkbox');
   checkboxButton.addEventListener('click', () => {
     item.done = checkboxButton.checked;
+    PubSub.publishSync('save');
   });
 
   const contentDiv = document.createElement('div');
@@ -37,6 +38,7 @@ function todoItemRender(item) {
   }
   prioritySelect.addEventListener('change', (e) =>{
     item.priority = e.target.value;
+    PubSub.publishSync('save');
   });
 
   const dateDiv = document.createElement('div');
@@ -48,10 +50,11 @@ function todoItemRender(item) {
   removeButton.textContent = 'x';
   removeButton.addEventListener('click', () => {
     element.parentElement.remove();
-    const index = item.project.items.indexOf(item);
+    const index = project.items.indexOf(item);
     if (index !== -1) {
-      item.project.items.splice(index, 1);
+      project.items.splice(index, 1);
     }
+    PubSub.publishSync('save');
   });
 
   const descriptionP = document.createElement('p');

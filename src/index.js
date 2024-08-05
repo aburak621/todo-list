@@ -2,6 +2,7 @@ import TodoItem from './todoItem';
 import Project from './project';
 import ProjectManager from './projectManager';
 import Priority from './priority';
+import PubSub from 'pubsub-js';
 import { addDays } from 'date-fns';
 import projectRender from './projectRender';
 import './style.css';
@@ -15,18 +16,21 @@ const addItemButton = document.querySelector('.sidebar__add-task-button');
 addItemButton.addEventListener('click', () => {
   projectManager.activeProject.addTodoItem(new TodoItem('Placeholder Todo', 'Placeholder Description', new Date(), Priority.HIGH));
   projectRender(projectManager.activeProject, content);
+  saveData();
 });
+PubSub.subscribe('save', saveData);
 
 
 const projectManager = new ProjectManager();
 projectManager.addProject(new Project('My Project'), true);
-console.log(projectManager.activeProject);
 
 projectManager.activeProject.addTodoItem(new TodoItem('First Todo', 'Heyo', addDays(new Date(), 3), Priority.LOW));
 projectManager.activeProject.addTodoItem(new TodoItem('First Todo', 'Heyo', addDays(new Date(), 3), Priority.LOW));
-projectRender(projectManager.activeProject, content);
 
 projectManager.addProject(new Project('Heyoo'), false);
+
+loadData();
+projectRender(projectManager.activeProject, content);
 projectListRender();
 
 
@@ -46,4 +50,16 @@ function projectListRender() {
     li.appendChild(button);
     projectList.appendChild(li);
   });
+  PubSub.publish('save');
+}
+
+function saveData() {
+  localStorage.setItem('projectManager', JSON.stringify(projectManager));
+}
+
+function loadData() {
+  const savedData = localStorage.getItem('projectManager');
+  if (savedData) {
+    projectManager.fromParsedJSON(JSON.parse(savedData));
+  }
 }
