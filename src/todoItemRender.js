@@ -1,5 +1,5 @@
-import { formatRelative } from 'date-fns';
-import Priority from './priority';
+import { formatRelative, isValid } from 'date-fns';
+import prioritySelect from './prioritySelect';
 
 function todoItemRender(item, project) {
   const element = document.createElement('div');
@@ -24,26 +24,15 @@ function todoItemRender(item, project) {
   titleDiv.classList.add('todo__title');
   titleDiv.textContent = item.title;
 
-  const prioritySelect = document.createElement('select');
-  prioritySelect.classList.add('todo__priority');
-  for (const key in Priority) {
-    if (Priority.hasOwnProperty(key)) {
-      const priorityOption = document.createElement('option');
-      priorityOption.textContent = Priority[key];
-      if (item.priority === Priority[key]) {
-        priorityOption.selected = true;
-      }
-      prioritySelect.appendChild(priorityOption);
-    }
-  }
-  prioritySelect.addEventListener('change', (e) =>{
+  const prioSelect = prioritySelect(item, (e) => {
     item.priority = e.target.value;
     PubSub.publishSync('save');
   });
+  prioSelect.classList.add('todo__priority');
 
   const dateDiv = document.createElement('div');
   dateDiv.classList.add('todo__date');
-  dateDiv.textContent = formatRelative(item.dueDate, new Date());
+  dateDiv.textContent = isValid(item.dueDate) ? formatRelative(item.dueDate, new Date()) : '';
 
   const removeButton = document.createElement('button');
   removeButton.classList.add('todo__remove');
@@ -62,7 +51,7 @@ function todoItemRender(item, project) {
   descriptionP.textContent = item.description;
 
   headerDiv.appendChild(titleDiv);
-  headerDiv.appendChild(prioritySelect);
+  headerDiv.appendChild(prioSelect);
   headerDiv.appendChild(dateDiv);
   headerDiv.appendChild(removeButton);
 

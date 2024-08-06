@@ -6,26 +6,35 @@ import PubSub from 'pubsub-js';
 import { addDays } from 'date-fns';
 import projectRender from './projectRender';
 import './style.css';
+import todoItemModal from './todoItemModal';
 
-
+// DOM Elements
 const content = document.querySelector('.content');
 const projectList = document.querySelector('.sidebar__project-list');
 const addItemButton = document.querySelector('.sidebar__add-task-button');
+const addProjectButton = document.querySelector('.sidebar__add-project-button');
 
-
-addItemButton.addEventListener('click', () => {
-  projectManager.activeProject.addTodoItem(new TodoItem('Placeholder Todo', 'Placeholder Description', new Date(), Priority.HIGH));
-  projectRender(projectManager.activeProject, content);
-  saveData();
-});
+// Events
 PubSub.subscribe('save', saveData);
+addItemButton.addEventListener('click', () => {
+  const modal = todoItemModal(projectManager, () => {
+    projectRender(projectManager.activeProject, content);
+  });
+  modal.showModal();
+  PubSub.publish('save');
+});
+addProjectButton.addEventListener('click', () => {});
 
-
+// Main
 const projectManager = new ProjectManager();
 projectManager.addProject(new Project('My Project'), true);
 
-projectManager.activeProject.addTodoItem(new TodoItem('First Todo', 'Heyo', addDays(new Date(), 3), Priority.LOW));
-projectManager.activeProject.addTodoItem(new TodoItem('First Todo', 'Heyo', addDays(new Date(), 3), Priority.LOW));
+projectManager.activeProject.addTodoItem(
+  new TodoItem('First Todo', 'Heyo', addDays(new Date(), 3), Priority.LOW),
+);
+projectManager.activeProject.addTodoItem(
+  new TodoItem('First Todo', 'Heyo', addDays(new Date(), 3), Priority.LOW),
+);
 
 projectManager.addProject(new Project('Heyoo'), false);
 
@@ -33,10 +42,10 @@ loadData();
 projectRender(projectManager.activeProject, content);
 projectListRender();
 
-
+// Functions
 function projectListRender() {
   projectList.innerHTML = '';
-  projectManager.projects.forEach(project => {
+  projectManager.projects.forEach((project) => {
     const li = document.createElement('li');
     const button = document.createElement('button');
 
@@ -45,6 +54,7 @@ function projectListRender() {
     button.addEventListener('click', () => {
       projectManager.changeActiveProject(project);
       projectRender(project, content);
+      PubSub.publish('save');
     });
 
     li.appendChild(button);

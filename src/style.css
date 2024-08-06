@@ -27,6 +27,11 @@ html {
   flex-direction: column;
 }
 
+.sidebar__project_list_title {
+  display: flex;
+  justify-content: space-between;
+}
+
 .content {
   flex: 5;
 }
