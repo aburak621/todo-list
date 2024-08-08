@@ -2,9 +2,24 @@ import prioritySelect from './prioritySelect';
 import TodoItem from './todoItem';
 import { isValid } from 'date-fns';
 
+/**
+ * Constructs and returns a modal dialoge that can add a todo item to the active project.
+ *
+ * @param {any} projectManager Manager the actigve project resides on.
+ * @param {any} addCallback Callback that will be called when the todo item is added.
+ * @returns {} The modal element constructed.
+ */
 function todoItemModal(projectManager, addCallback) {
   const element = document.createElement('dialog');
   element.classList.add('todo-item-modal');
+  element.addEventListener('click', (e) => {
+    if (e.target == element) {
+      element.remove();
+      element.close();
+    }
+  });
+
+  const form = document.createElement('form');
 
   const titleInput = document.createElement('input');
   titleInput.classList.add('todo-item-modal__title');
@@ -20,9 +35,16 @@ function todoItemModal(projectManager, addCallback) {
   priority.classList.add('todo-item-modal__priority');
 
   const addButton = document.createElement('button');
-  addButton.classList.add('todo-item-add-button');
+  addButton.classList.add('todo-item-modal__add-button');
+  addButton.type = 'submit';
   addButton.textContent = 'Add Todo';
-  addButton.addEventListener('click', () => {
+  addButton.addEventListener('click', (e) => {
+    e.preventDefault();
+
+    if (titleInput.value === '') {
+      return;
+    }
+
     const date = new Date(dueDateInput.value);
     const newItem = new TodoItem(titleInput.value, descriptionInput.value, isValid(date) ? date : '', priority.value);
     projectManager.activeProject.addTodoItem(newItem);
@@ -34,11 +56,13 @@ function todoItemModal(projectManager, addCallback) {
     }
   });
 
-  element.appendChild(titleInput);
-  element.appendChild(descriptionInput);
-  element.appendChild(dueDateInput);
-  element.appendChild(priority);
-  element.appendChild(addButton);
+  form.appendChild(titleInput);
+  form.appendChild(descriptionInput);
+  form.appendChild(dueDateInput);
+  form.appendChild(priority);
+  form.appendChild(addButton);
+
+  element.appendChild(form);
 
   document.querySelector('body').appendChild(element);
 

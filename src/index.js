@@ -7,6 +7,7 @@ import { addDays } from 'date-fns';
 import projectRender from './projectRender';
 import './style.css';
 import todoItemModal from './todoItemModal';
+import projectModal from './projectModal';
 
 // DOM Elements
 const content = document.querySelector('.content');
@@ -21,9 +22,14 @@ addItemButton.addEventListener('click', () => {
     projectRender(projectManager.activeProject, content);
   });
   modal.showModal();
-  PubSub.publish('save');
 });
-addProjectButton.addEventListener('click', () => {});
+addProjectButton.addEventListener('click', () => {
+  const modal = projectModal(projectManager, () => {
+    projectRender(projectManager.activeProject, content);
+    projectListRender();
+  });
+  modal.showModal();
+});
 
 // Main
 const projectManager = new ProjectManager();
