@@ -53,8 +53,8 @@ function projectListRender() {
   projectList.innerHTML = '';
   projectManager.projects.forEach((project) => {
     const li = document.createElement('li');
-    const button = document.createElement('button');
 
+    const button = document.createElement('button');
     button.classList.add('sidebar__project');
     button.textContent = project.name;
     button.addEventListener('click', () => {
@@ -63,7 +63,25 @@ function projectListRender() {
       PubSub.publish('save');
     });
 
+    const removeButton = document.createElement('button');
+    removeButton.classList.add('sidebar__remove-project-button');
+    removeButton.textContent = 'x';
+    removeButton.style.visibility = 'hidden';
+    removeButton.addEventListener('click', () => {
+      projectManager.removeProject(project);
+      projectRender(projectManager.activeProject, content);
+      projectListRender();
+    });
+
+    li.addEventListener('mouseover', () => {
+      removeButton.style.visibility = 'visible';
+    });
+    li.addEventListener('mouseleave', () => {
+      removeButton.style.visibility = 'hidden';
+    });
+
     li.appendChild(button);
+    li.appendChild(removeButton);
     projectList.appendChild(li);
   });
   PubSub.publish('save');

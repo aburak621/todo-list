@@ -27,7 +27,12 @@ html {
   flex-direction: column;
 }
 
-.sidebar__project_list_title {
+.sidebar__project-list-title {
+  display: flex;
+  justify-content: space-between;
+}
+
+.sidebar__project-list li {
   display: flex;
   justify-content: space-between;
 }

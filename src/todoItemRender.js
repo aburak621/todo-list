@@ -35,7 +35,7 @@ function todoItemRender(item, project) {
   dateDiv.textContent = isValid(item.dueDate) ? formatRelative(item.dueDate, new Date()) : '';
 
   const removeButton = document.createElement('button');
-  removeButton.classList.add('todo__remove');
+  removeButton.classList.add('todo__remove-button');
   removeButton.textContent = 'x';
   removeButton.addEventListener('click', () => {
     element.parentElement.remove();
