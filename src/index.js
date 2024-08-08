@@ -8,6 +8,7 @@ import projectRender from './projectRender';
 import './style.css';
 import todoItemModal from './todoItemModal';
 import projectModal from './projectModal';
+import confirmModal from './confirmModal';
 
 // DOM Elements
 const content = document.querySelector('.content');
@@ -18,6 +19,9 @@ const addProjectButton = document.querySelector('.sidebar__add-project-button');
 // Events
 PubSub.subscribe('save', saveData);
 addItemButton.addEventListener('click', () => {
+  if (!projectManager.activeProject) {
+    return;
+  }
   const modal = todoItemModal(projectManager, () => {
     projectRender(projectManager.activeProject, content);
   });
@@ -68,9 +72,16 @@ function projectListRender() {
     removeButton.textContent = 'x';
     removeButton.style.visibility = 'hidden';
     removeButton.addEventListener('click', () => {
-      projectManager.removeProject(project);
-      projectRender(projectManager.activeProject, content);
-      projectListRender();
+      const removeModal = confirmModal(
+        `Are you sure you want to remove the project: ${project.name}`,
+        () => {
+          projectManager.removeProject(project);
+          projectRender(projectManager.activeProject, content);
+          projectListRender();
+        },
+        'Remove',
+      );
+      removeModal.showModal();
     });
 
     li.addEventListener('mouseover', () => {

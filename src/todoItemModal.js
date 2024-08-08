@@ -3,7 +3,7 @@ import TodoItem from './todoItem';
 import { isValid } from 'date-fns';
 
 /**
- * Constructs and returns a modal dialoge that can add a todo item to the active project.
+ * Constructs a modal dialoge that can add a todo item to the active project and adds it to the body.
  *
  * @param {any} projectManager Manager the actigve project resides on.
  * @param {any} addCallback Callback that will be called when the todo item is added.
@@ -46,7 +46,12 @@ function todoItemModal(projectManager, addCallback) {
     }
 
     const date = new Date(dueDateInput.value);
-    const newItem = new TodoItem(titleInput.value, descriptionInput.value, isValid(date) ? date : '', priority.value);
+    const newItem = new TodoItem(
+      titleInput.value,
+      descriptionInput.value,
+      isValid(date) ? date : '',
+      priority.value,
+    );
     projectManager.activeProject.addTodoItem(newItem);
     element.close();
     element.remove();

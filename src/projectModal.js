@@ -1,7 +1,7 @@
 import Project from './project';
 
 /**
- * Constructs and returns a modal dialoge that can add a new project.
+ * Constructs a modal dialoge that can add a new project and adds it to the body.
  *
  * @param {any} projectManager Manager the project will be added to.
  * @param {any} addCallback Callback that will be called when the project is added.

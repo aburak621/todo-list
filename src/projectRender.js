@@ -1,3 +1,4 @@
+import Project from './project';
 import todoItemRender from './todoItemRender';
 
 function projectRender(project, targetElement = null) {
@@ -6,11 +7,13 @@ function projectRender(project, targetElement = null) {
 
   const projectList = document.createElement('ul');
 
-  project.items.forEach(item => {
-    const li = document.createElement('li');
-    li.appendChild(todoItemRender(item, project));
-    projectList.appendChild(li);
-  });
+  if (project instanceof Project) {
+    project.items.forEach(item => {
+      const li = document.createElement('li');
+      li.appendChild(todoItemRender(item, project));
+      projectList.appendChild(li);
+    });
+  }
 
   element.appendChild(projectList);
 

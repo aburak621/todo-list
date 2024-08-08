@@ -18,7 +18,7 @@ class ProjectManager {
     this.projects.splice(this.projects.indexOf(project), 1);
 
     if (this.activeProject === project) {
-      this.activeProject = this.projects.slice(-1);
+      this.activeProject = this.projects.slice(-1).pop();
     }
   }
 
