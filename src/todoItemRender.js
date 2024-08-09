@@ -24,15 +24,15 @@ function todoItemRender(item, project) {
   titleDiv.classList.add('todo__title');
   titleDiv.textContent = item.title;
 
+  const dateDiv = document.createElement('div');
+  dateDiv.classList.add('todo__date');
+  dateDiv.textContent = isValid(item.dueDate) ? formatRelative(item.dueDate, new Date()) : '';
+
   const prioSelect = prioritySelect(item, (e) => {
     item.priority = e.target.value;
     PubSub.publishSync('save');
   });
   prioSelect.classList.add('todo__priority');
-
-  const dateDiv = document.createElement('div');
-  dateDiv.classList.add('todo__date');
-  dateDiv.textContent = isValid(item.dueDate) ? formatRelative(item.dueDate, new Date()) : '';
 
   const removeButton = document.createElement('button');
   removeButton.classList.add('todo__remove-button');
@@ -51,8 +51,8 @@ function todoItemRender(item, project) {
   descriptionP.textContent = item.description;
 
   headerDiv.appendChild(titleDiv);
-  headerDiv.appendChild(prioSelect);
   headerDiv.appendChild(dateDiv);
+  headerDiv.appendChild(prioSelect);
   headerDiv.appendChild(removeButton);
 
   contentDiv.appendChild(headerDiv);

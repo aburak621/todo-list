@@ -40,7 +40,12 @@ const projectManager = new ProjectManager();
 projectManager.addProject(new Project('My Project'), true);
 
 projectManager.activeProject.addTodoItem(
-  new TodoItem('First Todo', 'Heyo', addDays(new Date(), 3), Priority.LOW),
+  new TodoItem(
+    'First Todo',
+    ' Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sit odio quos iure doloribus, optio, similique amet nam quae architecto exercitationem veniam suscipit non nesciunt nisi corrupti laborum, eveniet vero dolores. ',
+    addDays(new Date(), 3),
+    Priority.LOW,
+  ),
 );
 projectManager.activeProject.addTodoItem(
   new TodoItem('First Todo', 'Heyo', addDays(new Date(), 3), Priority.LOW),
