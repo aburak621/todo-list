@@ -1,9 +1,9 @@
+import PubSub from 'pubsub-js';
+import { addDays } from 'date-fns';
 import TodoItem from './todoItem';
 import Project from './project';
 import ProjectManager from './projectManager';
 import Priority from './priority';
-import PubSub from 'pubsub-js';
-import { addDays } from 'date-fns';
 import projectRender from './projectRender';
 import './style.css';
 import todoItemModal from './todoItemModal';
